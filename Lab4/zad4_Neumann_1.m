@@ -1,5 +1,5 @@
 clear, clc;
-#dane wej�ciowe
+%dane wej�ciowe
 f = @(x) exp(x) .* (-x .^2 + x + 2);
 g = @(x) x .* exp(x);
 a = 0;
@@ -9,10 +9,10 @@ bx = @(x) -x;
 cx = @(x) 1;
 ua = 0;
 ubf = 2 * exp(1);
-n = 25;
-h = (b-a)/(n+1);
+n = 1000;
+h = (b-a)/(n+1)
 x = linspace((a+h),(b-h),n);
-#obliczenia
+%obliczenia
 a1 = [(-2 * ax(x) + cx(x) * h^2).* diag(eye(n)); 1];
 A1 = diag(a1);
 a2 = (ax(x) +1/2 * bx(x) * h)' .* diag(eye(n));
@@ -26,8 +26,8 @@ F = [F h*ubf];
 U = linsolve(A,F');
 U = [ua U'];
 X = [a x b];
-#wykres
+%wykres
 plot(X, U, X, g(X), 'ro');
 legend('Metoda Analityczna','Metoda Numeryczna',0);
-#error
-E = max(abs(g(X) - U));
+%error
+E = max(abs(g(X) - U))

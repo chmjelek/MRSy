@@ -1,0 +1,51 @@
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{clear}\NormalTok{, }\FunctionTok{clc}\NormalTok{;}
+\CommentTok{% zad 2}
+\CommentTok{% Przykładowe dane}
+\NormalTok{nx = }\FloatTok{10}\NormalTok{; ny = }\FloatTok{50}\NormalTok{; xa = }\FloatTok{0}\NormalTok{; xb = }\FloatTok{2}\NormalTok{; ya = }\FloatTok{0}\NormalTok{; yb = }\FloatTok{1}\NormalTok{;}
+\NormalTok{f = @(x, y) (x.^}\FloatTok{2}\NormalTok{ + y.^}\FloatTok{2}\NormalTok{) .* }\FunctionTok{exp}\NormalTok{(x.*y);}
+\NormalTok{g = @(x, y) }\FunctionTok{exp}\NormalTok{(x.*y);}
+\NormalTok{uxa = @(x) }\FloatTok{1}\NormalTok{;         }\CommentTok{%u1}
+\NormalTok{uxb = @(x) }\FunctionTok{exp}\NormalTok{(x);    }\CommentTok{%u3}
+\NormalTok{uya = @(y) }\FloatTok{1}\NormalTok{;         }\CommentTok{%u4}
+\NormalTok{uyb = @(y) }\FunctionTok{exp}\NormalTok{(}\FloatTok{2}\NormalTok{.*y); }\CommentTok{%u2}
+
+\CommentTok{% Obliczenia}
+\NormalTok{h = (xb-xa)/(nx+}\FloatTok{1}\NormalTok{);}
+\NormalTok{k = (yb-ya)/(ny+}\FloatTok{1}\NormalTok{);}
+\NormalTok{xM = }\FunctionTok{linspace}\NormalTok{(xa + h, xb - h, nx);}
+\NormalTok{yM  = }\FunctionTok{linspace}\NormalTok{(ya+k, yb-k, ny);}
+\NormalTok{T = -}\FloatTok{2}\NormalTok{*(h^}\FloatTok{2}\NormalTok{ + k^}\FloatTok{2}\NormalTok{) * }\FunctionTok{eye}\NormalTok{(nx) + k^}\FloatTok{2}\NormalTok{ * }\FunctionTok{diag}\NormalTok{(}\FunctionTok{diag}\NormalTok{(}\FunctionTok{eye}\NormalTok{(nx-}\FloatTok{1}\NormalTok{)),-}\FloatTok{1}\NormalTok{) \textbackslash{}}
+\NormalTok{+ k^}\FloatTok{2}\NormalTok{ * }\FunctionTok{diag}\NormalTok{(}\FunctionTok{diag}\NormalTok{(}\FunctionTok{eye}\NormalTok{(nx-}\FloatTok{1}\NormalTok{)),}\FloatTok{1}\NormalTok{);}
+\BaseNTok{I}\NormalTok{ = }\FunctionTok{eye}\NormalTok{(nx);}
+\NormalTok{B = }\FunctionTok{kron}\NormalTok{(}\FunctionTok{eye}\NormalTok{(ny), T);}
+\NormalTok{C = }\FunctionTok{kron}\NormalTok{(}\FunctionTok{diag}\NormalTok{(}\FunctionTok{diag}\NormalTok{(}\FunctionTok{eye}\NormalTok{(ny-}\FloatTok{1}\NormalTok{)),-}\FloatTok{1}\NormalTok{), h^}\FloatTok{2}\NormalTok{ * }\BaseNTok{I}\NormalTok{);}
+\NormalTok{D = }\FunctionTok{kron}\NormalTok{(}\FunctionTok{diag}\NormalTok{(}\FunctionTok{diag}\NormalTok{(}\FunctionTok{eye}\NormalTok{(ny-}\FloatTok{1}\NormalTok{)),}\FloatTok{1}\NormalTok{), h^}\FloatTok{2}\NormalTok{ * }\BaseNTok{I}\NormalTok{);}
+\NormalTok{A = B + C + D;}
+
+\NormalTok{[X1 Y1] = }\FunctionTok{meshgrid}\NormalTok{(xM,yM);}
+\NormalTok{F = f(X1, Y1)' .* }\FunctionTok{ones}\NormalTok{(nx, ny);}
+\NormalTok{F = h^}\FloatTok{2}\NormalTok{ * k^}\FloatTok{2}\NormalTok{ .* F;}
+\NormalTok{F(:, }\FloatTok{1}\NormalTok{) = F(:, }\FloatTok{1}\NormalTok{) - h^}\FloatTok{2}\NormalTok{ * uxa(xM)';}
+\NormalTok{F(:, ny) = F(:, ny) - h^}\FloatTok{2}\NormalTok{ * uxb(xM)';}
+\NormalTok{F(}\FloatTok{1}\NormalTok{, :) = F(}\FloatTok{1}\NormalTok{, :) - k^}\FloatTok{2}\NormalTok{ * uya(yM);}
+\NormalTok{F(nx, :) = F(nx, :) - k^}\FloatTok{2}\NormalTok{ * uyb(yM);}
+\NormalTok{F = }\FunctionTok{reshape}\NormalTok{(F,  nx*ny, }\FloatTok{1}\NormalTok{);}
+\CommentTok{% Rozwiązanie}
+\NormalTok{U = linsolve(A,F);}
+\NormalTok{U = }\FunctionTok{reshape}\NormalTok{(U,  nx, ny)';}
+\NormalTok{[X,Y] = }\FunctionTok{meshgrid}\NormalTok{(xa:h:xb, ya:k:yb);}
+\NormalTok{U = [uya(yM)' .* }\FunctionTok{diag}\NormalTok{(}\FunctionTok{eye}\NormalTok{(ny)), U, uyb(yM)' .* }\FunctionTok{diag}\NormalTok{(}\FunctionTok{eye}\NormalTok{(ny))];}
+\NormalTok{XM = [xa xM xb];}
+\NormalTok{G = g(X,Y);}
+\NormalTok{U = [uxa(XM)' .* }\FunctionTok{diag}\NormalTok{(}\FunctionTok{eye}\NormalTok{(nx+}\FloatTok{2}\NormalTok{)), U', uxb(XM)' .* }\FunctionTok{diag}\NormalTok{(}\FunctionTok{eye}\NormalTok{(nx+}\FloatTok{2}\NormalTok{))]';}
+\CommentTok{% Błąd}
+\NormalTok{Error = }\FunctionTok{max}\NormalTok{(}\FunctionTok{max}\NormalTok{(}\FunctionTok{abs}\NormalTok{(G-U)));}
+\CommentTok{% Wykres}
+\FunctionTok{subplot}\NormalTok{(}\FloatTok{1}\NormalTok{,}\FloatTok{2}\NormalTok{,}\FloatTok{1}\NormalTok{)}
+\FunctionTok{surf}\NormalTok{(X,Y,U)}
+\FunctionTok{subplot}\NormalTok{(}\FloatTok{1}\NormalTok{,}\FloatTok{2}\NormalTok{,}\FloatTok{2}\NormalTok{)}
+\FunctionTok{surf}\NormalTok{(X,Y,G)}
+\end{Highlighting}
+\end{Shaded}

@@ -1,0 +1,96 @@
+\section{Równania różniczkowe cząstkowe I i II rzędu}
+\subsection{Równania różniczkowe liniowe rzędu II}
+Równanie różniczkowe postaci:
+$$ a(x,y) \dfrac{\partial^2u}{\partial x^2} + 2b \dfrac{\partial ^2u}{\partial x \partial u} + c(x,y)\dfrac{\partial^2u}{\partial y^2} + d(x,y) \dfrac{\partial u}{\partial x} + e(x,y) \dfrac{\partial u}{\partial y} + f(x,y) u + g(x,y) = 0$$
+
+nazywamy równaniem różniczkowym cząstkowym liniowym rzędu II, gdzie $a^2 + b^2 + c^2>0$ na $\Omega$,\\ a, b, c, d, e, f, g $\in$ C($\Omega$)
+\\
+Wyróżnik równania cząstkowego rzędu II:
+$$\Delta = b^2 = ac$$\\
+Równanie różniczkowe cząstkowe liniowe rzędu II jest typu eliptycznego, gdy $\Delta < 0$
+\newpage
+\subsection{Cel ćwiczenia}
+Naszym zadaniem było rozwiązanie równań Laplace'a i Poissona z dwuwymiarowymi zagadnieniami Dirichletta za pomocą stworzonego przez nas programu.
+\\
+Równanie Poissiona z dwuwymiarowymi zagadnieniami Dirichletta jest równaniem eliptycznym postaci:
+\[
+\begin{cases}
+\vspace{0.1cm} 
+\hspace{0,1cm}\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = f\\
+\vspace{0.1cm}
+\hspace{0,1cm}u_{|\partial \Omega} = \widetilde{u} \\
+\end{cases}
+\]
+
+, gdzie:
+
+$(x,y) \in \Omega$
+
+$\Omega = [a,b] \times [c,d]$
+
+$\Omega \subset \Re^2$
+
+Postać równania Laplace'a otrzymujemy przez podstawienie do równania Poissiona $f \equiv 0$. \\
+
+Wykorzystując schemat 5-pkt. dla operatora Laplace'a otrzymujemy odpowiednie równania:\\
+
+\begin{enumerate}
+	\item Dla siatki równomiernej (h=k)
+	\begin{equation}
+-4u_{i,j} + u_{i+1,j} + u_{i-1,j} + u_{i,j+1} + u_{i,j-1} = h^2 f_{i,j} \tag{*}
+	\end{equation}
+	
+	\item Dla siatki nierównomiernej (h $\neq$ k)
+	\begin{equation}
+		\dfrac{1}{h^2}\left(u_{i+1,j} + u_{i-1,j} \right) + \dfrac{1}{k^2} \left(u_{i,j+1} + u_{i,j-1} \right) -2\left(\dfrac{1}{h^2} + \dfrac{1}{k^2} \right)u_{i,j} = f_{i,j} \tag{**}
+	\end{equation}	
+\end{enumerate}
+Stosując równanie (**) otrzymujemy ogólniejsze rozwiązanie, ponieważ równienie (*) otrzymujemy przez podstawnie $k=h$ oraz odpowiednie przekształcenia.
+\\	
+
+Rozwiązaliśmy następujące równania:
+\begin{multicols}{3}
+	a)\\$\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0$\vspace{0.2cm}\\, gdzie:\\
+	$\Omega = [0,1]\times[0,1]$\\
+	warunki brzegowe:\\
+	$u(x,0) = 0$\\
+	$u(1,y) = y$\\
+	$u(x,1) = x$\\
+	$u(0,y) = 0$
+	\vspace{0.1cm}\\
+	Rozwiązanie analityczne:\\
+	\columnbreak
+	$\widetilde{u}(x,y) = xy$\\
+	b)\\$\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = (x^2+y^2)e^{xy}$\vspace{0.2cm}\\, gdzie:\\
+	$\Omega = [0,2]\times[0,1]$\\
+	warunki brzegowe:\\
+	$u(x,0) = 1$\\
+	$u(2,y) = e^{2y}$\\
+	$u(x,1) = e^x$\\	
+	$u(0,y) = 1$
+	\vspace{0.1cm}\\
+	Rozwiązanie analityczne:\\
+	\columnbreak
+	$\widetilde{u}(x,y) = e^{xy}$\\
+	c)\\$\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = \dfrac{x}{y} + \dfrac{y}{x}$\vspace{0cm}\\, gdzie:\\
+	$\Omega = [1,2]\times[1,2]$\\
+	warunki brzegowe:\\
+	$u(x,1) = x\cdot lnx$\\
+	$u(2,y) = 2y\cdot ln(2y)$\\
+	$u(x,2) = x\cdot ln(4x^2)$\\
+	$u(1,y) = y\cdot lny$
+	\vspace{0.1cm}\\
+	Rozwiązanie analityczne:\\
+	$\widetilde{u}(x,y) = xy\cdot ln(xy)$
+	
+	
+\end{multicols}
+\newpage
+\subsection{Algorytm}
+
+\begin{samepage}
+%\input{Lab5/zad} złe zmienić na nowe!
+\input{Lab5/kod}
+\end{samepage}
+\subsection{Wykresy}
+//TODO

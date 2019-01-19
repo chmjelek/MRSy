@@ -1,5 +1,5 @@
 clear, clc;
-#dane wej�ciowe
+%dane wej�ciowe
 f = @(x) -4*x;
 g = @(x) exp(2) * (exp(4) - 1 )^-1 * (exp(2*x) - exp(-2*x)) + x;
 a = 0;
@@ -9,10 +9,10 @@ bx = @(x) 0;
 cx = @(x) -4;
 ua = 0;
 ub = 2;
-n = input('Podaj liczbe wezlow: ');
-h = (b-a)/(n+1);
+n = 750;
+h = (b-a)/(n+1)
 x = linspace((a+h),(b-h),n);
-#obliczenia
+%obliczenia
 a1 = (-2 .* ax(x) + cx(x) .*h^2) .* diag(eye(n));
 A1 = diag(a1);
 a2 = (ax(x(2:n)) -1/2 .* bx(x(2:n)) .*h)' .* diag(eye(n-1));
@@ -26,8 +26,8 @@ F(n) = F(n) - ub * (ax(n) + 1/2 * bx(n)*h);
 U = linsolve(A,F');
 U = [ua U' ub];
 X = [a x b];
-#wykres
+%wykres
 plot(X, U, X, g(X), 'ro');
 legend('Metoda Analityczna','Metoda Numeryczna',0);
-#error
-E = max(abs(g(X) - U));
+%error
+E = max(abs(g(X) - U))
